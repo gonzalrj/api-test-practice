@@ -1,0 +1,7 @@
+echo "venv/
+*.pyc
+__pycache__/
+.idea/
+.vscode/
+.env
+.DS_Store" > .gitignore
