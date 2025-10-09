@@ -32,3 +32,11 @@ def test_create_product(base_url, default_headers):
 
     # Assert that response matches payload
     assert data["sku"] == payload["sku"]
+
+def test_delete_product(base_url, default_headers):
+    product_id = 4
+    params = {"product_id": 4}
+
+    res = requests.delete(f"{base_url}/v1/products/{product_id}", headers=default_headers, params=params)
+
+    assert res.status_code == 204, f"Expected 204, got {res.status_code}"
