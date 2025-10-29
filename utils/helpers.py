@@ -9,7 +9,7 @@ def unique_email() -> str:
 
 def get_base_url() -> str:
     """Return the API base URL from environment or default."""
-    return os.getenv("BASE_URL", "http://localhost:8000")
+    return os.getenv("BASE_URL")
 
 
 def api_key_header() -> dict:
