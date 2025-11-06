@@ -7,6 +7,11 @@ def unique_email() -> str:
     return f"test_{uuid.uuid4().hex[:8]}@example.com"
 
 
+def unique_sku() -> str:
+    """Generate a unique product ID of test products."""
+    return f"sku-{uuid.uuid4().hex[:3]}"
+
+
 def get_base_url() -> str:
     """Return the API base URL from environment or default."""
     return os.getenv("BASE_URL")

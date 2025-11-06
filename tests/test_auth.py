@@ -1,7 +1,9 @@
+import pytest
 import requests
 from utils.helpers import unique_email
 
 
+@pytest.mark.auth
 def test_user_flow(base_url, default_headers):
     """End-to-end test for user creation and token login."""
     # Create user
