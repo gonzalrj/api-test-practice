@@ -1,0 +1,27 @@
+name: Test with Docker
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t api-test-practice .
+
+      - name: Run tests with Docker
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}/allure-results:/app/allure-results \
+            api-test-practice
+
+      - name: Upload Allure results
+        uses: actions/upload-artifact@v3
+        with:
+          name: allure-results
+          path: allure-results
