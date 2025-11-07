@@ -26,7 +26,7 @@ jobs:
 
       # --- Build the tests image (uses Dockerfile at repo root that runs pytest) ---
       - name: Build tests image
-        run: docker build -t api-tests -f Dockerfile.tests .
+        run: docker build -t api-tests .
 
       # --- Create a dedicated network so containers can reach each other by name ---
       - name: Create docker network
