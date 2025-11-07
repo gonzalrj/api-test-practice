@@ -6,24 +6,35 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    services:
+      app:
+        image: your-app-image:latest
+        ports: ['8000:8000']
+        options: >-
+          --health-cmd="curl -f http://localhost:8000/health || exit 1"
+          --health-interval=10s --health-timeout=5s --health-retries=10
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Build Docker image
+      - name: Build tests image
         run: docker build -t api-tests .
 
-      - name: Run tests with Docker
+      - name: Wait for app service (optional)
         run: |
-          docker run --rm \
-            --add-host=host.docker.internal:host-gateway \
-            --env-file .env.local \
-            -v ${{ github.workspace }}/allure-results:/app/allure-results \
-            api-tests
+          for i in $(seq 1 30); do
+            if curl -sSf http://localhost:8000/health; then echo ready; break; fi
+            sleep 2
+          done
 
-      - name: Upload Allure results
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-results
-          path: allure-results
+      - name: Run tests
+        env:
+          BASE_URL: http://app:8000
+          API_KEY: ${{ secrets.API_KEY }}
+        run: |
+          mkdir -p ./allure-results
+          docker run --rm \
+            -e BASE_URL="$BASE_URL" \
+            -e API_KEY="$API_KEY" \
+            -v "${{ github.workspace }}/allure-results:/app/allure-results" \
+            api-tests
