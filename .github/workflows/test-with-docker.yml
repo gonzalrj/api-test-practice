@@ -17,11 +17,12 @@ jobs:
       - name: Run tests with Docker
         run: |
           docker run --rm \
+            --env-file .env.local \
             -v ${{ github.workspace }}/allure-results:/app/allure-results \
-            api-test-practice
+            api-tests
 
       - name: Upload Allure results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: allure-results
           path: allure-results
