@@ -17,6 +17,7 @@ jobs:
       - name: Run tests with Docker
         run: |
           docker run --rm \
+            --add-host=host.docker.internal:host-gateway \
             --env-file .env.local \
             -v ${{ github.workspace }}/allure-results:/app/allure-results \
             api-tests
